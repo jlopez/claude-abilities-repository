@@ -12,6 +12,7 @@ set -e
 chmod +x .githooks/pre-push
 git config core.hooksPath .githooks
 
-echo "core.hooksPath -> .githooks; pre-push hook active for this clone."
-echo "Note: this config is per-clone. Wire it into the repo's bootstrap"
+echo "core.hooksPath -> .githooks; pre-push hook active for this clone,"
+echo "including all of its worktrees (they share the clone's config)."
+echo "Note: the config is per-clone. Wire it into the repo's bootstrap"
 echo "(npm prepare, make setup, README) so collaborators get it too."

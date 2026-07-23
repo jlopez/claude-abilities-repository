@@ -4,7 +4,7 @@ name: Squash-merge policy
 description: >
   PR-only, squash-merge-always default branch with curated commit messages;
   optionally enforced by a pre-push hook.
-version: 1.0.0
+version: 1.0.1
 mode: faithful
 config:
   enforce_hook:
@@ -15,6 +15,17 @@ artifacts:
   - A "Merging to main" section in CLAUDE.md
   - A pre-push hook rejecting merge commits pushed to the default branch (only if enforce_hook)
 changelog:
+  - version: 1.0.1
+    date: 2026-07-23
+    intent: >
+      Wording only, no substance change. Clarifies that core.hooksPath is
+      per-clone but covers every worktree of that clone — worktrees share the
+      clone's configuration, each resolving the hooks path relative to its own
+      root. Discovered when the plugin repo adopted this ability from a
+      git-worktree-based checkout: the old "per-clone" phrasing read as
+      per-working-tree, leaving it unclear whether sibling worktrees were
+      protected (they are). Body step 2 and setup.sh's closing note now say
+      so; nothing an existing adopter must change.
   - version: 1.0.0
     date: 2026-07-23
     intent: >
@@ -62,10 +73,13 @@ The policy has two natures, installed through different channels:
      `setup.sh` from the repo root to wire it.
    - If the default branch is not `main`, set the `protected=` variable
      accordingly.
-   - `core.hooksPath` is per-clone: wire the same configuration into the
-     repo's existing bootstrap path (an npm `prepare` script, `make setup`, or
-     similar) so collaborators' clones enforce the policy too; failing that,
-     add a setup line to the README.
+   - `core.hooksPath` is per-clone — and set once, it covers every worktree
+     of that clone (worktrees share the clone's configuration; each resolves
+     the hooks path relative to its own root). Collaborators' clones don't
+     inherit it: wire the same configuration into the repo's existing
+     bootstrap path (an npm `prepare` script, `make setup`, or similar) so
+     their clones enforce the policy too; failing that, add a setup line to
+     the README.
 
 3. **Host-side settings** (optional; suggest, don't do): if the repo is hosted
    on GitHub and the user has admin rights, suggest disallowing merge commits

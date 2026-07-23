@@ -54,3 +54,13 @@ Decisions:
   adoption PR for the repo admin to run; it was not executed because
   host-side actions require an explicit yes, which a non-interactive run
   cannot obtain.
+
+## 2026-07-23 — Host-side suggestion executed
+
+The merge-settings change deferred at adoption was run by the repo admin
+(`gh repo edit --enable-merge-commit=false --enable-rebase-merge=false
+--enable-squash-merge`); verified state is `allow_merge_commit: false`,
+`allow_rebase_merge: false`, `allow_squash_merge: true`. The no-merge-commits
+constraint is now enforced server-side (covering the PR-merge path the
+pre-push hook cannot see) as well as locally by the hook. The adoption
+entry's "deferred" bullet above is history — this entry supersedes it.
